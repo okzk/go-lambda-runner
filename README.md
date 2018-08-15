@@ -13,8 +13,14 @@ go get -u github.com/okzk/go-lambda-runner
 Execute your function via go-lambda-runner.
 
 ```
+go-lambda-runner go run main.go
+```
+
+If you need a input payload, use pipe.
+```
 cat input.json | go-lambda-runner go run main.go
 ```
+
 
 ## License
 
