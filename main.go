@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"golang.org/x/crypto/ssh/terminal"
@@ -32,6 +33,9 @@ func main() {
 }
 
 func invoke(data []byte) error {
+	if len(os.Args) <= 1 {
+		return errors.New("missing a command")
+	}
 	cmd := exec.Command(os.Args[1], os.Args[2:]...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	cmd.Stdout = os.Stdout
