@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/lambda/messages"
+	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"net/rpc"
 	"os"
@@ -15,13 +16,17 @@ func main() {
 	if os.Getenv("_LAMBDA_SERVER_PORT") == "" {
 		os.Setenv("_LAMBDA_SERVER_PORT", "39999")
 	}
-	data, err := ioutil.ReadAll(os.Stdin)
-	if err != nil {
-		panic(err)
+
+	data := []byte("{}")
+	if !terminal.IsTerminal(0) {
+		var err error
+		data, err = ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	err = invoke(data)
-	if err != nil {
+	if err := invoke(data); err != nil {
 		panic(err)
 	}
 }
