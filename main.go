@@ -55,11 +55,12 @@ func invoke(data []byte) error {
 	}
 	defer client.Close()
 
+	deadline := time.Now().Add(time.Minute * 15)
 	req := &messages.InvokeRequest{
 		Payload:            data,
 		RequestId:          "1",
 		XAmznTraceId:       "1",
-		Deadline:           messages.InvokeRequest_Timestamp{Seconds: 300, Nanos: 0},
+		Deadline:           messages.InvokeRequest_Timestamp{Seconds: deadline.Unix(), Nanos: 0},
 		InvokedFunctionArn: "arn:aws:lambda:ap-northeast-1:000000000000:function:test",
 	}
 	var response *messages.InvokeResponse
